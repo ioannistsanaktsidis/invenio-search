@@ -207,9 +207,16 @@ def search(collection, p, of, ot, so, sf, sp, rm, rg, jrec):
         'size': int(rg),
         'from': jrec-1,
         'aggs': {
-            "collection": {"terms": {"field": "_collections"}},
-            "author": {"terms": {"field": "authors.raw"}},
-        },
+            "author": {"terms": {"field": "exactauthor.raw"}},
+            "experiment": {"terms": {"field": "accelerator_experiments.experiment"}},
+            "year": {
+                "date_histogram" : {
+                    "field" : "earliest_date",
+                    "interval" : "year",
+                    "format": "YYYY"
+                }
+            }
+        }
     })
 
     # FIXME refactor to separate search hook
