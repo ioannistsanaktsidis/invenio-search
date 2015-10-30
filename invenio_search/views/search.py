@@ -227,7 +227,14 @@ def search(collection, p, of, ot, so, sf, sp, rm, rg, jrec):
         post_filter = parsed_post_filter.query.accept(
             ElasticSearchDSL()
         )
-        response.body['post_filter'] = post_filter
+        # response.body['post_filter'] = post_filter
+        response.body['query']['bool']['must'].append(post_filter)
+
+        response.body['query'] = {
+            "filtered": {
+                'filter': response.body['query']
+            }
+        }
         # extracting the facet filtering
         from invenio_search.walkers.facets import FacetsVisitor
         filtered_facets = parsed_post_filter.query.accept(
