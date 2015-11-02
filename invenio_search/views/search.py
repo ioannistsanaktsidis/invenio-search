@@ -203,6 +203,7 @@ def search(collection, p, of, ot, so, sf, sp, rm, rg, jrec):
     collection_breadcrumbs(collection)
 
     response = Query(p).search(collection=collection.name)
+
     response.body.update({
         'size': int(rg),
         'from': jrec-1,
@@ -228,6 +229,7 @@ def search(collection, p, of, ot, so, sf, sp, rm, rg, jrec):
             ElasticSearchDSL()
         )
         # response.body['post_filter'] = post_filter
+
         response.body['query']['bool']['must'].append(post_filter)
 
         response.body['query'] = {
